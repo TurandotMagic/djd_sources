@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!--1.导入数据库编写配置文件-->
+	<context:property-placeholder location="classpath*:jdbc.properties" system-properties-mode="NEVER"/>
+	<!--2.创建连接池-->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	<!--3.创建SqlSessionFactory-->
+	<bean  class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!--3.1数据库连接池对象-->
+		<property name="dataSource" ref="dataSource"/>
+		<!--3.2加载MyBatis的配置文件-->
+		<property name="configLocation" value="classpath:mybatis.cfg.xml"/>
+		<!--3.3开启别名扫描(包名)-->
+		<property name="typeAliasesPackage" value="com.djd.crm.entity"/>
+		<!--3.4关联mapper的xml文件(路径)-->
+		<property name="mapperLocations" value="classpath*:com/djd/crm/dao/xml/*Dao.xml"/>
+	</bean>
+	<!--4.配置事务管理器DataSourceTransationManager-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!--5.AOP相关的配置-->
+	<tx:advice id="crudAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get" read-only="true"/>
+			<tx:method name="query*" read-only="true"/>
+			<tx:method name="select*" read-only="true"/>
+			<tx:method name="list*" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="crudPointCut" expression="execution(* com.djd.crm.service.*.*(..))"/>
+		<aop:advisor advice-ref="crudAdvice" pointcut-ref="crudPointCut"/>
+	</aop:config>
+	<!--*********************************************************-->
+	<!--开启注解扫描-->
+	<context:component-scan base-package="com.djd.crm.*"/>
+	<!--创建Mppaer的代理对象(扫描的方式)-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.djd.crm.dao"/>
+	</bean>
+
+	<!--加载其它配置文件-->
+	<import resource="classpath:applicationContext-mvc.xml"/>
+</beans>

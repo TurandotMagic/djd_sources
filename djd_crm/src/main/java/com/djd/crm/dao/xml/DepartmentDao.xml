@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.djd.crm.dao.DepartmentDao">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.djd.crm.entity.DepartmentEntity">
+		<id column="id" property="id" />
+		<result column="sn" property="sn" />
+		<result column="deptName" property="deptName" />
+		<result column="state" property="state" />
+	</resultMap>
+
+
+<select id="queryObject" resultType="com.djd.crm.entity.DepartmentEntity">
+		select * from department where id = #{value}
+</select>
+
+<select id="queryList" resultType="com.djd.crm.entity.DepartmentEntity">
+		select * from department
+	</select>
+	
+	<select id="queryTotal" resultType="int">
+		select count(*) from department 
+	</select>
+	
+	<insert id="save" parameterType="com.djd.crm.entity.DepartmentEntity"  >
+		insert into department
+		(
+						id
+									,sn
+						,deptName
+						,state
+					)
+		values
+		(
+						#{id}
+									,#{sn}
+						,#{deptName}
+						,#{state}
+					)
+	</insert>
+	
+	<update id="update" parameterType="com.djd.crm.entity.DepartmentEntity">
+		update department 
+		<set>
+						<if test=" sn!= null and sn.trim() != '' ">sn = #{sn}, </if>
+						<if test=" deptName!= null and deptName.trim() != '' ">deptName = #{deptName}, </if>
+						<if test=" state!= null and state.trim() != '' ">state = #{state}, </if>
+					</set>
+		 where id = #{id}	</update>
+	
+	<delete id="delete">
+		delete from department  where id = #{id}	</delete>
+	
+	<delete id="deleteBatch">
+		delete from department where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>
