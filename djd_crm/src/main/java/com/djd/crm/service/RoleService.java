@@ -30,4 +30,7 @@ public interface RoleService {
 	
 	void deleteBatch(String[] ids);
 
+    List<String> queryRoleByUserid(String userId);
+
+	int deleteRoleById(String roleId);
 }

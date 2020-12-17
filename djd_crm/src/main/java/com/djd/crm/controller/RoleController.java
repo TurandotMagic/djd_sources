@@ -36,7 +36,7 @@ public class RoleController {
 
 
     /**
-    * 查询列表
+    * 角色页面列表
     * @param params
     * @return
     */
@@ -51,8 +51,35 @@ public class RoleController {
        return pageResult;
    }
 
+    /**
+     * 用户新增页面，角色展示勾选
+     * @param params
+     * @return
+     */
+    @RequestMapping("/role/queryList")
+    @ResponseBody
+    public List<RoleEntity> queryList(@RequestParam Map<String, Object> params){
+        //查询列表数据
+        Query query = new Query(params);
+        List<RoleEntity> dataList = service.queryList(query);
+        return dataList;
+    }
 
-   /**
+    /**
+     * 用户新增页面，角色展示勾选
+     * @param params
+     * @return
+     */
+    @RequestMapping("/role/queryRoleByUserid")
+    @ResponseBody
+    public List<String> queryRoleByUserid(String userId){
+        //查询列表数据
+        List<String> dataList = service.queryRoleByUserid(userId);
+        return dataList;
+    }
+
+
+    /**
     *
     */
    //@SysLog("添加")
@@ -71,7 +98,7 @@ public class RoleController {
    //@SysLog("编辑")
    @RequestMapping(value = "/role/update", method = RequestMethod.POST)
    @ResponseBody
-   public R update(@RequestBody RoleEntity entity){
+   public R update(RoleEntity entity){
        service.update(entity);
        return R.ok();
    }
@@ -80,10 +107,10 @@ public class RoleController {
     * 删除
     */
    //@SysLog("删除")
-   @RequestMapping(value = "/role/delete", method = RequestMethod.POST)
+   @RequestMapping(value = "/role/deleteRoleById")
    @ResponseBody
-   public R delete(@RequestBody String[] ids){
-       service.deleteBatch(ids);
+   public R deleteRoleById( String roleId){
+       service.deleteRoleById(roleId);
        return R.ok();
    }
 

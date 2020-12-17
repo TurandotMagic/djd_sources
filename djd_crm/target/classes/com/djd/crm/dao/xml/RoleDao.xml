@@ -28,6 +28,10 @@
 	<select id="queryTotal" resultType="int">
 		select count(*) from role
 	</select>
+
+	<select id="queryRoleByUserid" resultType="String">
+		select role_id from user_role where user_id = #{userId}
+	</select>
 	
 	<insert id="save" parameterType="com.djd.crm.entity.RoleEntity"  >
 		insert into role
@@ -58,16 +62,22 @@
 	</insert>
 	
 	<update id="update" parameterType="com.djd.crm.entity.RoleEntity">
-		update permission 
+		update role
 		<set>
-						<if test=" name!= null and name.trim() != '' ">"name" = #{name}, </if>
-						<if test=" resource!= null and resource.trim() != '' ">"resource" = #{resource}, </if>
+						<if test=" name!= null and name.trim() != '' ">name = #{name}, </if>
+						<if test=" sn!= null and sn.trim() != '' ">sn = #{sn}, </if>
 					</set>
-		 where "id" = #{id}	</update>
+		 where id = #{id}	</update>
 	
 	<delete id="delete">
 		delete from permission  where "id" = #{id}	</delete>
-	
+
+	<delete id="deleteRoleById">
+		delete from role  where id = #{roleId}	</delete>
+
+	<delete id="deletePermissionById">
+		delete from role_permission  where role_id = #{roleId}	</delete>
+
 	<delete id="deleteBatch">
 		delete from permission where id in 
 		<foreach item="id" collection="array" open="(" separator="," close=")">

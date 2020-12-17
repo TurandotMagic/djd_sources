@@ -1,6 +1,7 @@
 package com.djd.crm.dao;
 
 import com.djd.crm.entity.UserEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -29,4 +30,8 @@ public interface UserDao  {
     void deleteBatch(String[] ids);
 
     void updateStateById(String id);
+
+    void insertRoleRelation(@Param("userId") String userId,@Param("roleId") String roleId);
+
+    void deleteRoleRelation(String userId);
 }

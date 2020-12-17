@@ -70,6 +70,19 @@
 						,#{isAdmin}
 					)
 	</insert>
+
+	<insert id="insertRoleRelation" >
+		insert into user_role
+		(
+		user_id,role_id
+		)
+		values
+		(
+		#{userId}
+		,#{roleId}
+
+		)
+	</insert>
 	
 	<update id="update" parameterType="com.djd.crm.entity.UserEntity">
 		update user 
@@ -88,7 +101,10 @@
 	
 	<delete id="delete">
 		delete from user  where id = #{id}	</delete>
-	
+
+	<delete id="deleteRoleRelation">
+		delete from user_role  where user_id = #{userId}	</delete>
+
 	<delete id="deleteBatch">
 		delete from user where id in 
 		<foreach item="id" collection="array" open="(" separator="," close=")">

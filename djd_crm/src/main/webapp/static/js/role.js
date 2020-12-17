@@ -161,8 +161,9 @@ $(function () {
             var rowData = roleDatagird.datagrid("getSelected");//获取选中的行 对象
             if (rowData) {
                 roleDialog.dialog("open");//打开新增窗口表格
-                roleDialog.dialog("setTitle", "新增");//设置新增窗口标题
+                roleDialog.dialog("setTitle", "编辑");//设置新增窗口标题
                 roleForm.form("clear");//把表格旧数据清空
+                roleForm.form("load",rowData);
                 //清空自身权限的数据
                 //selfPermission.datagrid("loadData",{total:0,rows:[]});
                 //重新加载所有权限的数据
@@ -180,15 +181,15 @@ $(function () {
         quit: function () {
             var rowData = roleDatagird.datagrid("getSelected");//获取选中的行 对象
             if (rowData) {
-                $.messager.confirm("温馨提示:", "你确定要注销吗？", function (yes) {
+                $.messager.confirm("温馨提示:", "你确定要删除吗？", function (yes) {
                     if (yes) {
-                        $.get("/role/updateStateById?id=" + rowData.id, function (data) {
+                        $.get("/role/deleteRoleById?roleId=" + rowData.id, function (data) {
                             if (data.code == 0) {
-                                $.messager.alert("温馨提示：", "注销成功", "info", function () {
+                                $.messager.alert("温馨提示：", "删除成功", "info", function () {
                                     roleDatagird.datagrid("reload");
                                 });
                             } else {
-                                $.messager.alert("温馨提示：", "注销失败", "error");
+                                $.messager.alert("温馨提示：", "删除失败", "error");
                             }
                         }, "json");
                     } else {

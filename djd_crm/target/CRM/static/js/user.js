@@ -1,11 +1,12 @@
 $(function () {
     //抽取代码
-    var userDatagird, userDialog, searchBtn, userForm
+    var userDatagird, userDialog, searchBtn, userForm,roleIds
 
     userDatagird = $("#user_datagird");
     userDialog = $("#user_dialog");
     searchBtn = $("#search_btn");
     userForm = $("#user_form");
+    roleIds = $("#roleIds");
     //datagrid数据表格
     userDatagird.datagrid({
         fit: true,
@@ -33,7 +34,7 @@ $(function () {
     userDialog.dialog({
         title: 'My Dialog',
         width: 400,
-        height: 330,
+        height: 400,
         buttons: '#user_dailog_button',
         closed: true
     });
@@ -65,8 +66,15 @@ $(function () {
                 url = "/user/save";
             }
             userForm.form("submit", {
-
                 url: url,
+                //提交额外参数，使用onSubmit
+                onSubmit:function (param) {
+                    var ids = roleIds.combobox("getValues");
+                    for(var i=0;i<ids.length;i++){
+                        param["roleEntityList["+i+"].id"] = ids[i];
+                    }
+                    return true;//放行提交，或者不写默认提交;返回false,拒绝提交;
+                },
                 success: function (data) {
                     //{"success":true,"msg":"保存成功"}
                     //{"success":false,"msg":"保存失败"}
@@ -99,10 +107,16 @@ $(function () {
             var rowData = userDatagird.datagrid("getSelected");//获取选中的行 对象
             if (rowData) {
                 userDialog.dialog("open");//打开新增窗口表格
-                userDialog.dialog("setTitle", "新增");//设置新增窗口标题
+                userDialog.dialog("setTitle", "编辑");//设置新增窗口标题
                 userForm.form("clear");//把表格旧数据清空
                 //数据回显
                 userForm.form("load", rowData);
+                //发送额外请求，获取用户角色数据并回显
+                $.get("/role/queryRoleByUserid?userId="+rowData.id,function (data) {
+                    console.log(data);
+                    roleIds.combobox("setValues",data);
+                })
+
             } else {
                 $.messager.alert("温馨提示：", "请选中一行数据进行编辑！", "warning");
             }

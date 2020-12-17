@@ -30,4 +30,10 @@ public interface RoleDao {
     void deleteBatch(String[] ids);
 
     void saveRoleAndPermission(@Param("roleId") String roleId,@Param("permissionId") String permissionId);
+
+    List<String> queryRoleByUserid(String userId);
+
+    int deleteRoleById(String roleId);
+
+    void deletePermissionById(String id);
 }

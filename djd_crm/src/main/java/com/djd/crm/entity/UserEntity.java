@@ -2,7 +2,9 @@ package com.djd.crm.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -38,6 +40,8 @@ public class UserEntity  {
 	private int state;
 	
 	private int isAdmin;
+
+	private List<RoleEntity> roleEntityList = new ArrayList<>();
 
 
 	public String getId() {
@@ -120,4 +124,11 @@ public class UserEntity  {
 		this.isAdmin = isAdmin;
 	}
 
+	public List<RoleEntity> getRoleEntityList() {
+		return roleEntityList;
+	}
+
+	public void setRoleEntityList(List<RoleEntity> roleEntityList) {
+		this.roleEntityList = roleEntityList;
+	}
 }

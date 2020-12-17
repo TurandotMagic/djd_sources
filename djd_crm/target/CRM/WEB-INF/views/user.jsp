@@ -45,6 +45,16 @@
                         url:'/department/list'
                         "/>
                 </div>
+                <div>
+                    <input id="roleIds" class="easyui-combobox" data-options="
+                        valueField: 'id',
+                        textField: 'name',
+                        label:'角色:',
+                        labelPosition:'top',
+                        multiple:true,
+                        url:'/role/queryList'
+                        "/>
+                </div>
             </div>
         </form>
 

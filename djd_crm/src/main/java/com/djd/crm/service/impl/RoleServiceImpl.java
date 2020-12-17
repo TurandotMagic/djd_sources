@@ -56,6 +56,14 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	@Transactional
 	public void update(RoleEntity entity) {
+		//先删除旧的中间表关系
+		dao.deletePermissionById(entity.getId());
+		//再新增新的角色_权限中间表关系
+		if(entity.getPermissionList().size()>0){
+			for (PermissionEntity permissionEntity : entity.getPermissionList()) {
+				dao.saveRoleAndPermission(entity.getId(),permissionEntity.getId());
+			}
+		}
 		dao.update(entity);
 	}
 
@@ -69,5 +77,15 @@ public class RoleServiceImpl implements RoleService {
 	@Transactional
 	public void deleteBatch(String[] ids) {
 		dao.deleteBatch(ids);
+	}
+
+	@Override
+	public List<String> queryRoleByUserid(String userId) {
+		return dao.queryRoleByUserid(userId);
+	}
+
+	@Override
+	public int deleteRoleById(String roleId) {
+		return dao.deleteRoleById(roleId);
 	}
 }
