@@ -59,4 +59,5 @@
 
 	<!--加载其它配置文件-->
 	<import resource="classpath:applicationContext-mvc.xml"/>
+	<import resource="classpath:applicationContext-shiro.xml"/>
 </beans>

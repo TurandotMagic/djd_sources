@@ -20,6 +20,10 @@
 		select * from user where "pk_value" = #{value}
 </select>
 
+	<select id="queryObjectByUsername" resultType="com.djd.crm.entity.UserEntity">
+		select * from user where username = #{username}
+	</select>
+
 <select id="queryList" resultType="com.djd.crm.entity.UserEntity">
 
 		select u.id id,u.username username,u.name name,u.tel tel,u.email email,dpm.deptName as dept,u.createTime createTime,u.state state,u.isAdmin isAdmin from user u

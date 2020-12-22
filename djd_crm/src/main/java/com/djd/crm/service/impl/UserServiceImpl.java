@@ -88,4 +88,9 @@ public class UserServiceImpl implements UserService {
 	public void updateStateById(String id) {
 		dao.updateStateById(id);
 	}
+
+	@Override
+	public UserEntity queryObjectByUsername(String username) {
+		return dao.queryObjectByUsername(username);
+	}
 }

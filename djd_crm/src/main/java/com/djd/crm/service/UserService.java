@@ -29,4 +29,6 @@ public interface UserService  {
 	void deleteBatch(String[] ids);
 
 	void updateStateById(String id);
+
+    UserEntity queryObjectByUsername(String username);
 }

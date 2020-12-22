@@ -34,4 +34,6 @@ public interface UserDao  {
     void insertRoleRelation(@Param("userId") String userId,@Param("roleId") String roleId);
 
     void deleteRoleRelation(String userId);
+
+    UserEntity queryObjectByUsername(String username);
 }
